@@ -5,6 +5,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 A simple project using Angular5 to fetch fake api tweets and display as table.
 Support responsive and multi language
 
+# Demo:
+access this link : https://twitter-hashtag.firebaseapp.com/
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
