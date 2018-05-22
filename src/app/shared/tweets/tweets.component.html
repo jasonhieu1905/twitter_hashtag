@@ -1,0 +1,72 @@
+<form [formGroup]="form" class="form">
+    <div class="form__header">
+        <div class="row">
+            <div class="col col-12 col-sm-6 col-lg-3">
+                <div class="form-group">
+                    <label>{{ title | translate }}</label>
+                    <div class="input-group input-group--search">
+                        <input formControlName="query" type="search" class="form-control" [placeholder]="placeholder | translate" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form__body">
+        <ng-container *ngIf="!isLoadding">
+            <section *ngIf="totalTweets; else noTweetsFound" class="card">
+                <div class="card-body pb-0 pt-0">
+                    <div class="table-grid">
+                        <div class="row">
+                            <div class="col col-4 text-left">
+                                {{ 'Tweet' | translate }}
+                            </div>
+                            <div class="col col-1 text-center">
+                                {{ 'Likes' | translate }}
+                            </div>
+                            <div class="col col-1 text-center">
+                                {{ 'Replies' | translate }}
+                            </div>
+                            <div class="col col-1 text-center">
+                                {{ 'Retweets' | translate }}
+                            </div>
+                            <div class="col col-3 text-left">
+                                {{ 'Hashtags' | translate }}
+                            </div>
+                            <div class="col col-2 text-left">
+                                {{ 'Date' | translate }}
+                            </div>
+                        </div>
+                        <div *ngFor="let tweet of tweets | slice : ((page-1)*TWEETS_PER_PAGE):(TWEETS_PER_PAGE); trackBy:pageTrackBy" class="row">
+                            <div class="col col-12 col-lg-4" [attr.data-title]="'Tweet' | translate">
+                                {{ tweet.tweet | shorten }}
+                            </div>
+                            <div class="col col-12 col-lg-1" [attr.data-title]="'Likes' | translate">
+                                {{ tweet.likes | number }}
+                            </div>
+                            <div class="col col-12 col-lg-1" [attr.data-title]="'Replies' | translate">
+                                {{ tweet.replies | number }}
+                            </div>
+                            <div class="col col-12 col-lg-1" [attr.data-title]="'Retweets' | translate">
+                                {{ tweet.retweets | number }}
+                            </div>
+                            <div class="col col-12 col-lg-3" [attr.data-title]="'Hashtags' | translate">
+                                {{ tweet.hashtagsDisplay }}
+                            </div>
+                            <div class="col col-12 col-lg-2" [attr.data-title]="'Date' | translate">
+                                {{ tweet.date | moment }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <ng-template #noTweetsFound>
+                <div class="alert alert-warning text-center" role="alert">
+                    {{ 'Opps! No Tweets Found.' | translate }}
+                </div>
+            </ng-template>
+            <input type="hidden" formControlName="page" />
+            <app-pagination [(page)]="currentPage" [totalRecords]="totalTweets" [perPage]="TWEETS_PER_PAGE" boundaryNumbers="1" boundaryLinks="true" (pageChange)="paginate($event)" #pagination></app-pagination>
+        </ng-container>
+        <div class="spinner" [hidden]="!isLoadding"></div>
+    </div>
+</form>
